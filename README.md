@@ -1,7 +1,7 @@
 ## Отчет КТ1
 
 <div style="text-align: center;font-size: 24px; font-weight: bold;">
-  Команда team_name=null
+  Команда СНГ++
 </div>
 
 ### Идея
@@ -34,4 +34,4 @@
 
 ### Формат выполнения 
 
-github - этот репозиторий (https://github.com/GlebNes109/cpp-game-project)
+github - этот репозиторий (ссылка - https://github.com/GlebNes109/cpp-game-project)
