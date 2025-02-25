@@ -1,8 +1,39 @@
-## Отчет КТ1
+## Bomberman
 
 <div style="text-align: center;font-size: 24px; font-weight: bold;">
   Команда СНГ++
 </div>
+
+### Инструкция по запуску Ubuntu
+
+предварительно установить библиотеку ncurses:
+
+```
+sudo apt install libncurses5-dev libncursesw5-dev
+```
+
+для запуска выполните в терминале:
+```
+g++ main.cpp -o bomberman -lncurses && ./bomberman
+```
+
+### Инструкция по запуску Windows
+
+скачайте библиотеку здесь:
+https://pdcurses.org/
+
+компиляция в терминале:
+
+```
+g++ -o bomberman main.cpp -lpdcurses
+```
+
+далее запуск
+
+```
+bomberman.exe
+```
+
 
 ### Идея
 В качестве проекта мы выбрали консольную версию Bomberman на C++. 
