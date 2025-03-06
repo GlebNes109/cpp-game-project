@@ -39,11 +39,16 @@ int main() {
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point enemy_start_time = std::chrono::steady_clock::now();
     while (true) {
+<<<<<<< HEAD
         char ch = getch();
         if (ch == ERR) {
             ch = ' ';
         }
         ch = tolower(ch); // к нижнему регистру
+=======
+        char ch = getch(); // ch - нажатая клавиша
+        char tolower(char ch); // к нижнему регистру
+>>>>>>> c45f90a (changes)
         // Выход по 'L' (можно поставить любую клавишу чтобы останавливать игру в терминале, жать control c каждый раз не оч удобно просто)
         if (ch == 'l' or ch == 'L') {
             break;
@@ -75,12 +80,15 @@ int main() {
                 player_start_time = std::chrono::steady_clock::now();
             }
         }
+<<<<<<< HEAD
 
         if (enemy_timer.count() >= 0.1) {
             enemycon.MoveEnemy(0);
             gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
+=======
+>>>>>>> c45f90a (changes)
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
     return 0;
