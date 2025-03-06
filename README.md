@@ -4,6 +4,23 @@
   Команда СНГ++
 </div>
 
+### Инструкция по запуску на MacOS
+Может не работать на маках с Intel процессорами (я думаю там другие пути и другие директории)
+Установите ncurses (предварительно установить homebrew)
+```
+brew install ncurses
+```
+билд проекта:
+```
+g++ -std=c++17 main.cpp -o bomberman -lncursesw \
+    -I/opt/homebrew/opt/ncurses/include \
+    -L/opt/homebrew/opt/ncurses/lib
+```
+запуск проекта:
+```
+./bomberman
+```
+
 ### Инструкция по запуску Ubuntu
 
 предварительно установить библиотеку ncurses:
