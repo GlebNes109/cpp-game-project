@@ -9,9 +9,15 @@
 #include <iostream>
 #include <vector>
 
+struct Enemy {
+    int x;
+    int y;
+};
+
 
 class GameSpaceController {
 private:
+    std::vector<Enemy> Enemies;
     int height = 11;
     int width = 21;
     std::vector<std::string> space = {
@@ -28,7 +34,14 @@ private:
         "#####################"
     };
 
+
 public:
+    void AddEnemy(int x, int y){
+        Enemy enemy;
+        enemy.x = x;
+        enemy.y = y;
+        Enemies.push_back(enemy);
+    }
     
     void DrawGameSpace(int playerY, int playerX) {
         for (int y = 0; y < height; y++) {

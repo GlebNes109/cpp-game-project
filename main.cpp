@@ -23,7 +23,7 @@ int main() {
 
     while (true) {
         char ch = getch(); // ch - нажатая клавиша
-        char tolower(char ch); // к нижнему регистру
+        char tolower(ch); // к нижнему регистру
         // Выход по 'L' (можно поставить любую клавишу чтобы останавливать игру в терминале, жать control c каждый раз не оч удобно просто)
         if (ch == 'l' or ch == 'L') {
             break;
@@ -44,6 +44,8 @@ int main() {
                 player.MovePlayer(1, 0);
                 break;
         }
+
+
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
     return 0;

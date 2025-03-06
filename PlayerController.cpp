@@ -10,7 +10,7 @@ public:
     PlayerController(int startX, int startY, GameSpaceController game_space_controller) {
         playerX = startX;
         playerY = startY; 
-        gsc = game_space_controller; //инициализация того что пришло в конструктор #этовамнепитон)))
+        gsc = game_space_controller;
     };
     // стартовая позиция передается в конструктор чтобы было понятно откуда двигать на старте, gsc передается 
     // потому что новый локально делать нельзя (может можно я хз), я думаю могут быть проблемы
@@ -29,6 +29,6 @@ public:
     
     }
     int getPlayerX();
-    int getPlayerY();
+    int getPlayerY(); // todo надо доделать геттеры
 };
 
