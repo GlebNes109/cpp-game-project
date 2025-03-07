@@ -8,7 +8,7 @@
 
 int main() {
     initscr(); // для ncurses
-
+    auto time_player = 0.09; // время которое отсекается между нажатиями wasd подобрать по ощущениям
     int startX = 10;
     int startY = 5;
     GameSpaceController gsc;
@@ -20,7 +20,7 @@ int main() {
     // keypad(stdscr, TRUE); // поддержкf стрелок (не заработало, юзаем wasd пока, потом поправить)
 
     gsc.DrawGameSpace(startY, startX);
-
+    std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     while (true) {
         char ch = getch(); // ch - нажатая клавиша
         char tolower(ch); // к нижнему регистру
@@ -28,24 +28,27 @@ int main() {
         if (ch == 'l' or ch == 'L') {
             break;
         }
-        // switch case это как if, только оч стильно и модно
-        switch (ch) {
-            case 'a':
-                player.MovePlayer(0, -1); //сейчас в MovePlayer сначала Y, потом X, надо будет переделать
-                // std::chrono::milliseconds(10000); сделать задержку (надо придумать что-то чтобы игрок двигался не так быстро, задержка не помогла)
-                break; // выход из свичкейса, не из цикла
-            case 'd':
+        std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now(); // текущее время
+        std::chrono::duration<double> timer = now - player_start_time; // время с последнего обновления
+        if (timer.count() >= time_player) {
+            // если прошло n секунд, проверяем клавишу
+            if (ch == 'a') {
+                player.MovePlayer(0, -1);
+                player_start_time = std::chrono::steady_clock::now(); // засечь новый таймер
+            }
+            if (ch == 'd') {
                 player.MovePlayer(0, 1);
-                break;
-            case 'w':
+                player_start_time = std::chrono::steady_clock::now();
+            }
+            if (ch == 'w') {
                 player.MovePlayer(-1, 0);
-                break;
-            case 's':
+                player_start_time = std::chrono::steady_clock::now();
+            }
+            if (ch == 's') {
                 player.MovePlayer(1, 0);
-                break;
+                player_start_time = std::chrono::steady_clock::now();
+            }
         }
-
-
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
     return 0;

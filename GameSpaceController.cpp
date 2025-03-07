@@ -12,12 +12,13 @@
 struct Enemy {
     int x;
     int y;
+    char symbol = 'E';
 };
 
 
 class GameSpaceController {
 private:
-    std::vector<Enemy> Enemies;
+    std::vector<Enemy> enemies;
     int height = 11;
     int width = 21;
     std::vector<std::string> space = {
@@ -40,7 +41,7 @@ public:
         Enemy enemy;
         enemy.x = x;
         enemy.y = y;
-        Enemies.push_back(enemy);
+        enemies.push_back(enemy);
     }
     
     void DrawGameSpace(int playerY, int playerX) {
@@ -48,6 +49,9 @@ public:
             for (int x = 0; x < width; x++) {
                 mvaddch(y, x,  space[y][x]);
                 mvaddch(playerY, playerX, 'P');
+                for (int enemy = 0; enemy < enemies.size(); enemy++) {
+                    mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
+                }
             }
         }
         // рефрешить надо в конце иначе из-за постоянной перерисовки картинка будет мерцать
