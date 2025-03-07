@@ -8,19 +8,13 @@
 #include <cctype>
 #include <iostream>
 #include <vector>
-
-struct Enemy {
-    int x;
-    int y;
-    char symbol = 'E';
-};
-
+#include "Structures.h" 
 
 class GameSpaceController {
 private:
-    std::vector<Enemy> enemies;
     int height = 11;
     int width = 21;
+    std::vector<Enemy>& enemies;
     std::vector<std::string> space = {
         "#####################",
         "#                   #",
@@ -37,6 +31,10 @@ private:
 
 
 public:
+    GameSpaceController(std::vector<Enemy>& enemies)
+    : enemies(enemies) {}
+    // std::vector<Enemy> enemies;
+    
     void AddEnemy(int x, int y){
         Enemy enemy;
         enemy.x = x;
@@ -48,23 +46,19 @@ public:
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 mvaddch(y, x,  space[y][x]);
-                mvaddch(playerY, playerX, 'P');
-                for (int enemy = 0; enemy < enemies.size(); enemy++) {
-                    mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
-                }
             }
+        }
+        mvaddch(playerY, playerX, 'P');
+        for (int enemy = 0; enemy < enemies.size(); enemy++) {
+            mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
+            // refresh();
         }
         // рефрешить надо в конце иначе из-за постоянной перерисовки картинка будет мерцать
         refresh();
     }
 
-    /*void DrawPlayer(int playerY, int playerX) {
-        mvaddch(playerY, playerX, 'P');
-        refresh();
-    }*/
-
     std::vector<std::string>& getSpace() {
-        return space;
+        return space; // подумать, возвращать только space или space + обьекты на нем
     }
     // сейчас возвращается ссылка на space, это чтобы возвращалось актуальное пространство которое можно менять извне.
     // менять извне space лучше не надо (для этого собственно и есть GameSpaceController), но такая возможность на всякий случай есть
