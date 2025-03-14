@@ -23,21 +23,27 @@ int main() {
     
     EnemyController enemycon(enemies, gsc);
 
-    PlayerController player(startX, startY, gsc);
+    PlayerController player(gsc);
     noecho(); // откл отображение вводимых символов и мигающего курсора
     curs_set(0);
+    cbreak();
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
     gsc.AddEnemy(5, 4);
     gsc.AddEnemy(7, 4);
 
     // AddEnemy()
     // keypad(stdscr, TRUE); // поддержкf стрелок (не заработало, юзаем wasd пока, потом поправить)
 
-    gsc.DrawGameSpace(startY, startX);
+    gsc.DrawGameSpace();
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point enemy_start_time = std::chrono::steady_clock::now();
     while (true) {
-        char ch = getch(); // ch - нажатая клавиша
-        char tolower(ch); // к нижнему регистру
+        char ch = getch();
+        if (ch == ERR) {
+            ch = ' ';
+        }
+        ch = tolower(ch); // к нижнему регистру
         // Выход по 'L' (можно поставить любую клавишу чтобы останавливать игру в терминале, жать control c каждый раз не оч удобно просто)
         if (ch == 'l' or ch == 'L') {
             break;
@@ -70,8 +76,9 @@ int main() {
             }
         }
 
-        if (enemy_timer.count() >= 0.01) {
+        if (enemy_timer.count() >= 0.1) {
             enemycon.MoveEnemy(0);
+            gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
     }

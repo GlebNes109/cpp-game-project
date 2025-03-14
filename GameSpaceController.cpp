@@ -14,6 +14,8 @@ class GameSpaceController {
 private:
     int height = 11;
     int width = 21;
+    int playerX = 5;
+    int playerY = 10;
     std::vector<Enemy>& enemies;
     std::vector<std::string> space = {
         "#####################",
@@ -42,16 +44,16 @@ public:
         enemies.push_back(enemy);
     }
     
-    void DrawGameSpace(int playerY, int playerX) {
+    void DrawGameSpace() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                mvaddch(y, x,  space[y][x]);
+                mvaddch(y, x, space[y][x]);
             }
         }
         mvaddch(playerY, playerX, 'P');
         for (int enemy = 0; enemy < enemies.size(); enemy++) {
             mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
-            // refresh();
+            refresh();
         }
         // рефрешить надо в конце иначе из-за постоянной перерисовки картинка будет мерцать
         refresh();
@@ -59,6 +61,13 @@ public:
 
     std::vector<std::string>& getSpace() {
         return space; // подумать, возвращать только space или space + обьекты на нем
+    }
+
+    int& getPlayerX() {
+        return playerX;
+    }
+    int& getPlayerY() {
+        return playerY;
     }
     // сейчас возвращается ссылка на space, это чтобы возвращалось актуальное пространство которое можно менять извне.
     // менять извне space лучше не надо (для этого собственно и есть GameSpaceController), но такая возможность на всякий случай есть
