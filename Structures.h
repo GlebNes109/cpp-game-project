@@ -10,6 +10,8 @@ struct Enemy {
 struct Bomb {
     int x;
     int y;
+    int blastRadius;
+    int countdown;
     char symbol = 'B';
 };
 

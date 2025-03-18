@@ -41,6 +41,7 @@ int main() {
     gsc.DrawGameSpace();
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point enemy_start_time = std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point bomb_check_time = std::chrono::steady_clock::now();
     while (true) {
         char ch = getch(); // ch - нажатая клавиша
         char tolower(char ch); // к нижнему регистру
@@ -51,6 +52,10 @@ int main() {
         std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now(); // текущее время
         std::chrono::duration<double> player_timer = now - player_start_time; // время с последнего обновления
         std::chrono::duration<double> enemy_timer = now - enemy_start_time;
+        std::chrono::duration<double> bomb_check_timer = now - bomb_check_time;
+
+        bool showB = false;
+        int bX = -1, bY = -1;
 
         if (player_timer.count() >= time_player) {
             // если прошло n секунд, проверяем клавишу
@@ -77,6 +82,7 @@ int main() {
 
             if (ch == 'e') {
                 gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
+                Bomb newBomb = {3, 5};
             }
         }
 
@@ -84,6 +90,10 @@ int main() {
             enemycon.MoveEnemy(0);
             gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
+        }
+        if (bomb_check_timer.count() >= 3.0) {
+            bombcon.CheckBombs();
+            bomb_check_time = std::chrono::steady_clock::now();
         }
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
