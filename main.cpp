@@ -7,6 +7,8 @@
 #include "PlayerController.cpp"
 #include "Structures.h"
 #include "EnemyController.cpp"
+#include "BombController.cpp"
+
 
 int main() {
     initscr(); // для ncurses
@@ -16,11 +18,12 @@ int main() {
     int startX = 10;
     int startY = 5;
     std::vector<Enemy> enemies; // по архитектуре надо будет уточнить, но скорее всего так будет норм
+    std::vector<Bomb> bombs;
     // списки врагов, бомб итд создаются тут, потом закидываем ссылки тому кому они нужны
     // EnemyController enemycon(enemies, gsc);
 
-    GameSpaceController gsc(enemies); // ВНИМАНИЕ, это должно быть единственное место где инициализирвоан gsc, повторная инициализация = потеря игрового поля
-    
+    GameSpaceController gsc(enemies, bombs); // ВНИМАНИЕ, это должно быть единственное место где инициализирвоан gsc, повторная инициализация = потеря игрового поля
+    BombController bombcon(bombs, gsc);
     EnemyController enemycon(enemies, gsc);
 
     PlayerController player(gsc);
@@ -39,16 +42,8 @@ int main() {
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point enemy_start_time = std::chrono::steady_clock::now();
     while (true) {
-<<<<<<< HEAD
-        char ch = getch();
-        if (ch == ERR) {
-            ch = ' ';
-        }
-        ch = tolower(ch); // к нижнему регистру
-=======
         char ch = getch(); // ch - нажатая клавиша
         char tolower(char ch); // к нижнему регистру
->>>>>>> c45f90a (changes)
         // Выход по 'L' (можно поставить любую клавишу чтобы останавливать игру в терминале, жать control c каждый раз не оч удобно просто)
         if (ch == 'l' or ch == 'L') {
             break;
@@ -79,16 +74,17 @@ int main() {
                 player.MovePlayer(1, 0);
                 player_start_time = std::chrono::steady_clock::now();
             }
+
+            if (ch == 'e') {
+                gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
+            }
         }
-<<<<<<< HEAD
 
         if (enemy_timer.count() >= 0.1) {
             enemycon.MoveEnemy(0);
             gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
-=======
->>>>>>> c45f90a (changes)
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
     return 0;

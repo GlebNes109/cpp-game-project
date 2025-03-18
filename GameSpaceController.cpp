@@ -17,6 +17,7 @@ private:
     int playerX = 5;
     int playerY = 10;
     std::vector<Enemy>& enemies;
+    std::vector<Bomb>& bombs;
     std::vector<std::string> space = {
         "#####################",
         "#                   #",
@@ -33,8 +34,8 @@ private:
 
 
 public:
-    GameSpaceController(std::vector<Enemy>& enemies)
-    : enemies(enemies) {}
+    GameSpaceController(std::vector<Enemy>& enemies, std::vector<Bomb>& bombs)
+    : enemies(enemies), bombs(bombs) {}
     // std::vector<Enemy> enemies;
     
     void AddEnemy(int x, int y){
@@ -44,6 +45,13 @@ public:
         enemies.push_back(enemy);
     }
     
+    void AddBomb(int x, int y) {
+        Bomb Bomb;
+        Bomb.x = x;
+        Bomb.y = y;
+        bombs.push_back(Bomb);
+    }
+
     void DrawGameSpace() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -53,6 +61,11 @@ public:
         mvaddch(playerY, playerX, 'P');
         for (int enemy = 0; enemy < enemies.size(); enemy++) {
             mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
+            refresh();
+        }
+
+        for (int bomb = 0; bomb < bombs.size(); bomb++) {
+            mvaddch(bombs[bomb].y, bombs[bomb].x, bombs[bomb].symbol);
             refresh();
         }
         // рефрешить надо в конце иначе из-за постоянной перерисовки картинка будет мерцать

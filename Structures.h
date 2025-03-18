@@ -7,4 +7,10 @@ struct Enemy {
     char symbol = 'E';
 };
 
+struct Bomb {
+    int x;
+    int y;
+    char symbol = 'B';
+};
+
 #endif

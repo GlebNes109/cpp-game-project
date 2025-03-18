@@ -1,4 +1,6 @@
 #include "GameSpaceController.cpp"
+#include "Structures.h"
+
 #define PLAYER_CONTROLLER_H
 
 class EnemyController {
