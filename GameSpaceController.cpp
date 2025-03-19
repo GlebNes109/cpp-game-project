@@ -14,7 +14,7 @@ class GameSpaceController {
 private:
     int height = 11;
     int width = 21;
-    int playerX = 5;
+    int playerX = 10;
     int playerY = 10;
     std::vector<Enemy>& enemies;
     std::vector<Bomb>& bombs;

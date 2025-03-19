@@ -11,7 +11,7 @@ struct Bomb {
     int x;
     int y;
     int blastRadius;
-    int countdown;
+    int countdown = 3;
     char symbol = 'B';
 };
 

@@ -13,12 +13,10 @@ public:
     : bombs(bombs), gsc(game_space_controller) {}
 
     void CheckBombs() {
-    for (auto it = bombs.begin(); it != bombs.end(); ) {
-        it->countdown--;
-        if (it->countdown <= 0) {
-            it = bombs.erase(it);
-        } else {
-            ++it;
+    for (int i = 0; i < bombs.size(); i++) {
+        bombs[i].countdown -= 1;
+        if (bombs[i].countdown <= 0) {
+            bombs.erase(bombs.begin() + i);
         }
     }
 }

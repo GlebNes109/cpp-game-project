@@ -54,9 +54,6 @@ int main() {
         std::chrono::duration<double> enemy_timer = now - enemy_start_time;
         std::chrono::duration<double> bomb_check_timer = now - bomb_check_time;
 
-        bool showB = false;
-        int bX = -1, bY = -1;
-
         if (player_timer.count() >= time_player) {
             // если прошло n секунд, проверяем клавишу
 
@@ -82,7 +79,7 @@ int main() {
 
             if (ch == 'e') {
                 gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
-                Bomb newBomb = {3, 5};
+                // Bomb newBomb = {3, 5}; что это такое?? какой еще newBomb, зачем
             }
         }
 
@@ -91,7 +88,7 @@ int main() {
             gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
-        if (bomb_check_timer.count() >= 3.0) {
+        if (bomb_check_timer.count() >= 1) {
             bombcon.CheckBombs();
             bomb_check_time = std::chrono::steady_clock::now();
         }
