@@ -8,7 +8,7 @@
 #include <cctype>
 #include <iostream>
 #include <vector>
-#include "Structures.h" 
+#include "Structures.h"
 
 class GameSpaceController {
 private:
@@ -52,7 +52,7 @@ public:
         bombs.push_back(Bomb);
     }
 
-    void DrawGameSpace() {
+    bool DrawGameSpace() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 mvaddch(y, x, space[y][x]);
@@ -61,6 +61,9 @@ public:
         mvaddch(playerY, playerX, 'P');
         for (int enemy = 0; enemy < enemies.size(); enemy++) {
             mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
+            if (playerX == enemies[enemy].x and playerY == enemies[enemy].y) {
+                return false;
+            }
             refresh();
         }
 
@@ -70,6 +73,7 @@ public:
         }
         // рефрешить надо в конце иначе из-за постоянной перерисовки картинка будет мерцать
         refresh();
+        return true;
     }
 
     std::vector<std::string>& getSpace() {
@@ -79,11 +83,10 @@ public:
     int& getPlayerX() {
         return playerX;
     }
+
     int& getPlayerY() {
         return playerY;
     }
-    // сейчас возвращается ссылка на space, это чтобы возвращалось актуальное пространство которое можно менять извне.
-    // менять извне space лучше не надо (для этого собственно и есть GameSpaceController), но такая возможность на всякий случай есть
 };
 
 #endif
