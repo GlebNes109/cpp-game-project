@@ -18,6 +18,7 @@ private:
     int playerY = 5;
     std::vector<Enemy>& enemies;
     std::vector<Bomb>& bombs;
+    std::vector<Explosion>& explosions;
     std::vector<std::string> space = {
         "#####################",
         "#                   #",
@@ -32,10 +33,15 @@ private:
         "#####################"
     };
 
+    char CheckBlast(int x, int y) {
+        chtype ch = mvinch(y, x);
+        return ch & A_CHARTEXT;
+    }
+
 
 public:
-    GameSpaceController(std::vector<Enemy>& enemies, std::vector<Bomb>& bombs)
-    : enemies(enemies), bombs(bombs) {}
+    GameSpaceController(std::vector<Enemy>& enemies, std::vector<Bomb>& bombs, std::vector<Explosion>& explosions)
+    : enemies(enemies), bombs(bombs), explosions(explosions) {}
     // std::vector<Enemy> enemies;
     
     void AddEnemy(int x, int y){
@@ -59,17 +65,137 @@ public:
             }
         }
         mvaddch(playerY, playerX, 'P');
+
         for (int enemy = 0; enemy < enemies.size(); enemy++) {
             mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
             if (playerX == enemies[enemy].x and playerY == enemies[enemy].y) {
                 return false;
             }
-            refresh();
         }
 
         for (int bomb = 0; bomb < bombs.size(); bomb++) {
             mvaddch(bombs[bomb].y, bombs[bomb].x, bombs[bomb].symbol);
-            refresh();
+        }
+
+        for (int exp = 0; exp < explosions.size(); exp++) {
+            Explosion explosion = explosions[exp];
+            // m - minus, p - plus
+            bool flag_x_m = false;
+            bool flag_x_p = false;
+            bool flag_y_m = false;
+            bool flag_y_p = false;
+            for (int i = 0; i <= explosion.blastRadius; i++) {
+                int blast_x_p = explosion.x + i;
+                int blast_x_m = explosion.x - i;
+                int blast_y_m = explosion.y - i;
+                int blast_y_p = explosion.y + i;
+                
+                if (blast_x_p >= 0 && blast_x_p < width && flag_x_p == false) {
+                    int x = blast_x_p;
+                    int y = explosion.y;
+                    char symbol = CheckBlast(x, y);
+                    Enemy example_enemy;
+                    char symbol_enemy = example_enemy.symbol;
+                    char symbol_player = 'P';
+                    if (symbol == ' ') {
+                        mvaddch(y, x, explosion.symbol);
+                    } else if (symbol == example_enemy.symbol) {
+                        for (int enemy = 0; enemy < enemies.size(); enemy++) {
+                            if (x == enemies[enemy].x and y == enemies[enemy].y) {
+                                enemies.erase(enemies.begin() + enemy);
+                            }
+                        }
+                        flag_x_p = true;
+                    }
+
+                    else if (symbol == symbol_player) {
+                        flag_x_p = true;
+                        return false; // игрок умер
+                    }
+                    
+                } else {
+                    flag_x_p = true;
+                }
+
+                if (blast_x_m >= 0 && flag_x_m == false) {
+                    int x = blast_x_m;
+                    int y = explosion.y;
+                    char symbol = CheckBlast(x, y);
+                    Enemy example_enemy;
+                    char symbol_enemy = example_enemy.symbol;
+                    char symbol_player = 'P';
+                    if (symbol == ' ') {
+                        mvaddch(y, x, explosion.symbol);
+                    } else if (symbol == example_enemy.symbol) {
+                        for (int enemy = 0; enemy < enemies.size(); enemy++) {
+                            if (x == enemies[enemy].x and y == enemies[enemy].y) {
+                                enemies.erase(enemies.begin() + enemy);
+                            }
+                        }
+                        flag_x_m = true;
+                    }
+
+                    else if (symbol == symbol_player) {
+                        flag_x_m = true;
+                        return false; // игрок умер
+                    }
+                    // mvaddch(explosion.y, blast_x_m, explosion.symbol);
+                } else {
+                    flag_x_m = true;
+                }
+
+                if (blast_y_p >= 0 && blast_y_p < height && flag_y_p == false) {
+                    int x = explosion.x;
+                    int y = blast_y_p;
+                    char symbol = CheckBlast(x, y);
+                    Enemy example_enemy;
+                    char symbol_enemy = example_enemy.symbol;
+                    char symbol_player = 'P';
+                    if (symbol == ' ') {
+                        mvaddch(y, x, explosion.symbol);
+                    } else if (symbol == example_enemy.symbol) {
+                        for (int enemy = 0; enemy < enemies.size(); enemy++) {
+                            if (x == enemies[enemy].x and y == enemies[enemy].y) {
+                                enemies.erase(enemies.begin() + enemy);
+                            }
+                        }
+                        flag_y_p = true;
+                    }
+                    else if (symbol == symbol_player) {
+                        flag_x_p = true;
+                        return false; // игрок умер
+                    }
+                    // mvaddch(blast_y_p, explosion.x, explosion.symbol);
+                } else {
+                    flag_y_p = true;
+                }
+
+                if (blast_y_m >= 0 && blast_y_m < height && flag_y_m == false) {
+                    int x = explosion.x;
+                    int y = blast_y_m;
+                    char symbol = CheckBlast(x, y);
+                    Enemy example_enemy;
+                    char symbol_enemy = example_enemy.symbol;
+                    char symbol_player = 'P';
+                    if (symbol == ' ') {
+                        mvaddch(y, x, explosion.symbol);
+                    } else if (symbol == example_enemy.symbol) {
+                        for (int enemy = 0; enemy < enemies.size(); enemy++) {
+                            if (x == enemies[enemy].x and y == enemies[enemy].y) {
+                                enemies.erase(enemies.begin() + enemy);
+                            }
+                        }
+                        flag_y_p = true;
+                    }
+                    else if (symbol == symbol_player) {
+                        flag_x_p = true;
+                        return false; // игрок умер
+                    }
+                    // lmvaddch(blast_y_m, explosion.x, explosion.symbol);
+                } else {
+                    flag_y_m = true;
+                }
+            }
         }
         // рефрешить надо в конце иначе из-за постоянной перерисовки картинка будет мерцать
         refresh();

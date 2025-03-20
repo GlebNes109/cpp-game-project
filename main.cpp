@@ -17,15 +17,17 @@ int main() {
     auto time_player = 0.09; // время которое отсекается между нажатиями wasd подобрать по ощущениям
     std::vector<Enemy> enemies; // по архитектуре надо будет уточнить, но скорее всего так будет норм
     std::vector<Bomb> bombs;
+    std::vector<Explosion> explosions;
     // списки врагов, бомб итд создаются тут, потом закидываем ссылки тому кому они нужны
     // EnemyController enemycon(enemies, gsc);
 
-    GameSpaceController gsc(enemies, bombs); // ВНИМАНИЕ, это должно быть единственное место где инициализирвоан gsc, повторная инициализация = потеря игрового поля
-    BombController bombcon(bombs, gsc);
+    GameSpaceController gsc(enemies, bombs, explosions); // ВНИМАНИЕ, это должно быть единственное место где инициализирвоан gsc, повторная инициализация = потеря игрового поля
+    BombController bombcon(bombs, gsc, explosions);
     EnemyController enemycon(enemies, gsc);
 
     PlayerController player(gsc);
     noecho(); // откл отображение вводимых символов и мигающего курсора
+    setlocale(LC_ALL, "");
     curs_set(0);
     cbreak();
     keypad(stdscr, TRUE);
@@ -89,7 +91,7 @@ int main() {
             // gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
-        if (bomb_check_timer.count() >= 1) {
+        if (bomb_check_timer.count() >= 0.5) {
             bombcon.CheckBombs();
             bomb_check_time = std::chrono::steady_clock::now();
         }
@@ -97,7 +99,6 @@ int main() {
         if (draw_timer.count() >= 0.4) {
             res = gsc.DrawGameSpace();
         }
-        bombcon.DrawExplosions();
         if (res == false) {
             endwin();
             std::cout << " ##  ##    #####   ##   ##           ####      #####    #####   ######  \n"
