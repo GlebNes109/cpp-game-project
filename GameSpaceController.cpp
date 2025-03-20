@@ -15,7 +15,7 @@ private:
     int height = 11;
     int width = 21;
     int playerX = 10;
-    int playerY = 10;
+    int playerY = 5;
     std::vector<Enemy>& enemies;
     std::vector<Bomb>& bombs;
     std::vector<std::string> space = {

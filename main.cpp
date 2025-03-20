@@ -15,8 +15,6 @@ int main() {
     // nodelay(stdscr, TRUE); // это чтобы getch не блокировал выполнение
     // timeout(0);
     auto time_player = 0.09; // время которое отсекается между нажатиями wasd подобрать по ощущениям
-    int startX = 10;
-    int startY = 5;
     std::vector<Enemy> enemies; // по архитектуре надо будет уточнить, но скорее всего так будет норм
     std::vector<Bomb> bombs;
     // списки врагов, бомб итд создаются тут, потом закидываем ссылки тому кому они нужны
@@ -34,6 +32,7 @@ int main() {
     nodelay(stdscr, TRUE);
     gsc.AddEnemy(5, 4);
     gsc.AddEnemy(7, 4);
+    // player.MovePlayer(10, 5);
 
     // AddEnemy()
     // keypad(stdscr, TRUE); // поддержкf стрелок (не заработало, юзаем wasd пока, потом поправить)
@@ -83,7 +82,7 @@ int main() {
             }
         }
 
-        if (enemy_timer.count() >= 0.1) {
+        if (enemy_timer.count() >= 0.5) {
             enemycon.MoveEnemy(0);
             gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();

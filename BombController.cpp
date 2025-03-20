@@ -11,12 +11,13 @@ private:
 public:
     BombController(std::vector<Bomb>& bombs, GameSpaceController& game_space_controller)
     : bombs(bombs), gsc(game_space_controller) {}
-
     void CheckBombs() {
     for (int i = 0; i < bombs.size(); i++) {
         bombs[i].countdown -= 1;
         if (bombs[i].countdown <= 0) {
+            if (bombs.end() >= bombs.begin() + i) {
             bombs.erase(bombs.begin() + i);
+            }
         }
     }
 }
