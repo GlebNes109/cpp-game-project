@@ -41,6 +41,7 @@ int main() {
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point enemy_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point bomb_check_time = std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point fps = std::chrono::steady_clock::now();
     while (true) {
         char ch = getch(); // ch - нажатая клавиша
         char tolower(char ch); // к нижнему регистру
@@ -52,7 +53,8 @@ int main() {
         std::chrono::duration<double> player_timer = now - player_start_time; // время с последнего обновления
         std::chrono::duration<double> enemy_timer = now - enemy_start_time;
         std::chrono::duration<double> bomb_check_timer = now - bomb_check_time;
-
+        std::chrono::duration<double> draw_timer = now - fps;
+        bool res = true;
         if (player_timer.count() >= time_player) {
             // если прошло n секунд, проверяем клавишу
 
@@ -75,7 +77,7 @@ int main() {
                 player.MovePlayer(1, 0);
                 player_start_time = std::chrono::steady_clock::now();
             }
-
+            
             if (ch == 'e') {
                 gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
                 // Bomb newBomb = {3, 5}; что это такое?? какой еще newBomb, зачем
@@ -84,14 +86,30 @@ int main() {
 
         if (enemy_timer.count() >= 0.5) {
             enemycon.MoveEnemy(0);
-            gsc.DrawGameSpace();
+            // gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
         if (bomb_check_timer.count() >= 1) {
             bombcon.CheckBombs();
             bomb_check_time = std::chrono::steady_clock::now();
         }
-        bombcon.DrawExplosions(); 
+
+        if (draw_timer.count() >= 0.4) {
+            res = gsc.DrawGameSpace();
+        }
+        bombcon.DrawExplosions();
+        if (res == false) {
+            endwin();
+            std::cout << " ##  ##    #####   ##   ##           ####      #####    #####   ######  \n"
+            " ##  ##   ##   ##  ##   ##            ##      ##   ##  ##   ##  # ## #  \n"
+            " ##  ##   ##   ##  ##   ##            ##      ##   ##  #          ##    \n"
+            "  ####    ##   ##  ##   ##            ##      ##   ##   #####     ##    \n"
+            "   ##     ##   ##  ##   ##            ##   #  ##   ##       ##    ##    \n"
+            "   ##     ##   ##  ##   ##            ##  ##  ##   ##  ##   ##    ##    \n"
+            "  ####     #####    #####            #######   #####    #####    ####   \n";
+            endwin();
+            return 0;
+        }
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
     return 0;

@@ -24,11 +24,7 @@ public:
         if (space[newY][newX] == ' ') {
             playerX = newX;
             playerY = newY;
-            gsc.DrawGameSpace();
-        }
-    
+        }   
     }
-    int getPlayerX();
-    int getPlayerY(); // todo надо доделать геттеры
 };
 

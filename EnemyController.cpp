@@ -11,7 +11,7 @@ private:
 public:
     EnemyController(std::vector<Enemy>& enemies, GameSpaceController& game_space_controller)
     : enemies(enemies), gsc(game_space_controller) {}
-    std::vector<char> enemy_instruction_0 = {'w', 'a', 's', 'd'};
+    std::vector<char> enemy_instruction_0 = {'w', 'w', 'w', 'w', 's', 's', 's', 's'};
     std::vector<std::vector<char>> instructions = {enemy_instruction_0};
     // надо чтобы инструкции для врага прописывались тут, а таймер засекался в main, пока не знаю как лучше это сделать
     int it = 0;
@@ -33,8 +33,7 @@ public:
         }
         if (command == 'd') {
             enemies[enemy_id].x+=1;
-        }
-        
+        }        
     }
 
 };
