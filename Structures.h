@@ -5,6 +5,7 @@ struct Enemy {
     int x;
     int y;
     char symbol = 'E';
+    long long enemy_id;
 };
 
 struct Bomb {
@@ -20,7 +21,7 @@ struct Explosion {
     int timeLeft;
     char symbol = '*';
     int blastRadius = 2;
-    int countdown = 4;
+    int countdown = 2;
 };
 
 #endif
