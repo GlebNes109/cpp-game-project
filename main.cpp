@@ -27,28 +27,24 @@ int main() {
 
     PlayerController player(gsc);
     noecho(); // откл отображение вводимых символов и мигающего курсора
-    setlocale(LC_ALL, "");
     curs_set(0);
     cbreak();
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE);
-    gsc.AddEnemy(5, 4);
-    gsc.AddEnemy(7, 4);
-    // player.MovePlayer(10, 5);
-
-    // AddEnemy()
-    // keypad(stdscr, TRUE); // поддержкf стрелок (не заработало, юзаем wasd пока, потом поправить)
+    nodelay(stdscr, TRUE); // нет ожидания введения символов через getch
+    enemycon.AddEnemy(5, 4);
+    enemycon.AddEnemy(7, 4);
+    enemycon.AddEnemy(8, 9);
+    enemycon.AddEnemy(1, 2);
 
     gsc.DrawGameSpace();
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point enemy_start_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point bomb_check_time = std::chrono::steady_clock::now();
     std::chrono::steady_clock::time_point fps = std::chrono::steady_clock::now();
+
     while (true) {
         char ch = getch(); // ch - нажатая клавиша
         char tolower(char ch); // к нижнему регистру
-        // Выход по 'L' (можно поставить любую клавишу чтобы останавливать игру в терминале, жать control c каждый раз не оч удобно просто)
-        if (ch == 'l' or ch == 'L') {
+        if (ch == 'e') {
             break;
         }
         std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now(); // текущее время
@@ -80,7 +76,7 @@ int main() {
                 player_start_time = std::chrono::steady_clock::now();
             }
             
-            if (ch == 'e') {
+            if (ch == 'f') {
                 gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
                 // Bomb newBomb = {3, 5}; что это такое?? какой еще newBomb, зачем
             }
@@ -108,6 +104,19 @@ int main() {
             " ##  ###  ######   ## # ##   ## #             ##   ##    ###     ## #     ## ##  \n"
             "  ##  ##  ##  ##   ##   ##   ##   #           ##   ##    ###     ##   #   ##  ## \n"
             "   #####  ##  ##   ##   ##  #######            #####      #     #######  #### ## \n";
+            endwin();
+            return 0;
+        }
+
+        if (enemies.size() == 0) { // условие победы - убить всех врагов
+            endwin();
+            std::cout << " ##  ##    #####   ##   ##           ##   ##   ####    ##   ## \n"
+             " ##  ##   ##   ##  ##   ##           ##   ##    ##     ###  ## \n"
+             " ##  ##   ##   ##  ##   ##           ##   ##    ##     #### ## \n"
+             "  ####    ##   ##  ##   ##           ## # ##    ##     ## #### \n"
+             "   ##     ##   ##  ##   ##           #######    ##     ##  ### \n"
+             "   ##     ##   ##  ##   ##           ### ###    ##     ##   ## \n"
+             "  ####     #####    #####            ##   ##   ####    ##   ## \n";
             endwin();
             return 0;
         }

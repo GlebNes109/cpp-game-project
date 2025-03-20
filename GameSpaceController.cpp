@@ -16,6 +16,7 @@ private:
     int width = 21;
     int playerX = 10;
     int playerY = 5;
+    char player_symbol = 'P';
     std::vector<Enemy>& enemies;
     std::vector<Bomb>& bombs;
     std::vector<Explosion>& explosions;
@@ -64,7 +65,7 @@ public:
                 mvaddch(y, x, space[y][x]);
             }
         }
-        mvaddch(playerY, playerX, 'P');
+        mvaddch(playerY, playerX, player_symbol);
 
         for (int enemy = 0; enemy < enemies.size(); enemy++) {
             mvaddch(enemies[enemy].y, enemies[enemy].x, enemies[enemy].symbol);
@@ -84,12 +85,15 @@ public:
             bool flag_y_m = false;
             bool flag_y_p = false;
             mvaddch(explosion.y, explosion.x, explosion.symbol);
+            if (CheckCell(explosion.y, explosion.x) == player_symbol) {
+                return false;
+            };
             for (int i = 1; i <= explosion.blastRadius; i++) {
                 int blast_x_p = explosion.x + i;
                 int blast_x_m = explosion.x - i;
                 int blast_y_p = explosion.y + i;
                 int blast_y_m = explosion.y - i;
-        
+    
                 // Вправо
                 if (blast_x_p >= 0 && blast_x_p < width && !flag_x_p) {
                     int x = blast_x_p;
@@ -97,7 +101,6 @@ public:
                     char symbol = CheckCell(x, y);
                     Enemy example_enemy;
                     char symbol_enemy = example_enemy.symbol;
-                    char symbol_player = 'P';
         
                     if (symbol == ' ') {
                         mvaddch(y, x, explosion.symbol);
@@ -109,7 +112,7 @@ public:
                             }
                         }
                         flag_x_p = true;
-                    } else if (symbol == symbol_player) {
+                    } else if (symbol == player_symbol) {
                         return false; // игрок умер
                     } else {
                         flag_x_p = true;
@@ -123,7 +126,6 @@ public:
                     char symbol = CheckCell(x, y);
                     Enemy example_enemy;
                     char symbol_enemy = example_enemy.symbol;
-                    char symbol_player = 'P';
         
                     if (symbol == ' ') {
                         mvaddch(y, x, explosion.symbol);
@@ -135,7 +137,7 @@ public:
                             }
                         }
                         flag_x_m = true;
-                    } else if (symbol == symbol_player) {
+                    } else if (symbol == player_symbol) {
                         return false; // игрок умер
                     } else {
                         flag_x_m = true;
@@ -149,7 +151,6 @@ public:
                     char symbol = CheckCell(x, y);
                     Enemy example_enemy;
                     char symbol_enemy = example_enemy.symbol;
-                    char symbol_player = 'P';
 
                     if (symbol == ' ') {
                         mvaddch(y, x, explosion.symbol);
@@ -161,7 +162,7 @@ public:
                             }
                         }
                         flag_y_p = true;
-                    } else if (symbol == symbol_player) {
+                    } else if (symbol == player_symbol) {
                         return false; // игрок умер
                     } else {
                         flag_y_p = true;
@@ -175,7 +176,6 @@ public:
                     char symbol = CheckCell(x, y);
                     Enemy example_enemy;
                     char symbol_enemy = example_enemy.symbol;
-                    char symbol_player = 'P';
         
                     if (symbol == ' ') {
                         mvaddch(y, x, explosion.symbol);
@@ -187,7 +187,7 @@ public:
                             }
                         }
                         flag_y_m = true;
-                    } else if (symbol == symbol_player) {
+                    } else if (symbol == player_symbol) {
                         return false; // игрок умер
                     } else {
                         flag_y_m = true;
@@ -212,6 +212,11 @@ public:
     int& getPlayerY() {
         return playerY;
     }
+
+    char& getPlayerSymbol() {
+        return player_symbol;
+    }
+
 };
 
 #endif

@@ -11,8 +11,6 @@ private:
 public:
     EnemyController(std::vector<Enemy>& enemies, GameSpaceController& game_space_controller)
     : enemies(enemies), gsc(game_space_controller) {}
-    std::vector<char> enemy_instruction_0 = {'w', 'w', 'w', 'w', 's', 's', 's', 's'};
-    std::vector<std::vector<char>> instructions = {enemy_instruction_0};
     // надо чтобы инструкции для врага прописывались тут, а таймер засекался в main, пока не знаю как лучше это сделать
     int it = 0;
     void MoveEnemies() {
@@ -24,29 +22,29 @@ public:
             int next_y = enemies[i].y;
         
             if (abs(dx) > abs(dy)) { // abs - смотрим расстояние (модуль)
-                // Пробуем двигаться по X если по x дальше от игрока
-                if (dx > 0 && gsc.CheckCell(enemies[i].x + 1, enemies[i].y) == ' ') {
+                //  Выбираем какое расстояние больше и туда и идем
+                if (dx > 0 && (gsc.CheckCell(enemies[i].x + 1, enemies[i].y) == ' ' || gsc.CheckCell(enemies[i].x + 1, enemies[i].y) == gsc.getPlayerSymbol())) {
                     next_x++;
-                } else if (dx < 0 && gsc.CheckCell(enemies[i].x - 1, enemies[i].y) == ' '){
+                } else if (dx < 0 && (gsc.CheckCell(enemies[i].x - 1, enemies[i].y) == ' ' || gsc.CheckCell(enemies[i].x - 1, enemies[i].y) == gsc.getPlayerSymbol())){
                     next_x--;
                 } 
-                // Если не получилось по X пробуем по Y
-                else if (dy > 0 && gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == ' '){
+
+                else if (dy > 0 && (gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == ' ' || gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == gsc.getPlayerSymbol())){
                     next_y++;
-                } else if (dy < 0 && gsc.CheckCell(enemies[i].x, enemies[i].y - 1) == ' '){
+                } else if (dy < 0 && (gsc.CheckCell(enemies[i].x, enemies[i].y - 1) == ' ' || gsc.CheckCell(enemies[i].x, enemies[i].y - 1) == gsc.getPlayerSymbol())){
                     next_y--;
                 }
             } else { // если не пполучилось по модулю то просто двигаем хоть куда-нибудь
 
-                if (dy > 0 && gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == ' ') {
+                if (dy > 0 && (gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == ' ' || gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == gsc.getPlayerSymbol())) {
                     next_y++;
-                } else if (dy < 0 && gsc.CheckCell(enemies[i].x, enemies[i].y - 1) == ' ') {
+                } else if (dy < 0 && (gsc.CheckCell(enemies[i].x, enemies[i].y - 1) == ' ' || gsc.CheckCell(enemies[i].x, enemies[i].y - 1) == gsc.getPlayerSymbol())) {
                     next_y--;
                 } 
 
-                else if (dx > 0 && gsc.CheckCell(enemies[i].x + 1, enemies[i].y) == ' ') {
+                else if (dx > 0 && (gsc.CheckCell(enemies[i].x + 1, enemies[i].y) == ' ' || gsc.CheckCell(enemies[i].x + 1, enemies[i].y) == gsc.getPlayerSymbol())) {
                     next_x++;
-                } else if (dx < 0 && gsc.CheckCell (enemies[i].x - 1, enemies[i].y) == ' ') {
+                } else if (dx < 0 && (gsc.CheckCell(enemies[i].x - 1, enemies[i].y) == ' ' || gsc.CheckCell(enemies[i].x - 1, enemies[i].y) == gsc.getPlayerSymbol())) {
                     next_x--;
                 }
             }
@@ -54,26 +52,13 @@ public:
             enemies[i].x = next_x;
             enemies[i].y = next_y; 
         }
+    }
 
-
-        /*if (it < instructions[enemy_id].size()) {
-            it++;
-        } else {
-            it = 0;
-        }
-        char command = instructions[enemy_id][it];
-        if (command == 'w') {
-            enemies[enemy_id].y+=1;
-        }
-        if (command == 'a') {
-            enemies[enemy_id].x-=1;
-        }
-        if (command == 's') {
-            enemies[enemy_id].y-=1;
-        }
-        if (command == 'd') {
-            enemies[enemy_id].x+=1;
-        }*/
+    void AddEnemy(int x, int y) {
+        Enemy enemy;
+        enemy.x = x;
+        enemy.y = y;
+        enemies.push_back(enemy);
     }
 
 };

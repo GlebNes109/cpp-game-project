@@ -34,12 +34,6 @@ private:
                     explosions.erase(explosions.begin() + i);
                 }
             }
-        }}
-
-    /*void AddBomb(int x, int y) {
-        Bomb Bomb;
-        Bomb.x = x;
-        Bomb.y = y;
-        bombs.push_back(Bomb);
-    }*/
+        }
+    }
 };
