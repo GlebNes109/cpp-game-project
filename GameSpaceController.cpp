@@ -8,7 +8,7 @@
 #include <cctype>
 #include <iostream>
 #include <vector>
-#include "Structures.h" 
+#include "Structures.h"
 
 class GameSpaceController {
 private:

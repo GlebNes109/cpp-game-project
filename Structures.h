@@ -15,4 +15,9 @@ struct Bomb {
     char symbol = 'B';
 };
 
+struct Explosion {
+        int x, y;
+        int timeLeft;
+    };
+
 #endif

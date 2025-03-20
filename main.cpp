@@ -92,6 +92,7 @@ int main() {
             bombcon.CheckBombs();
             bomb_check_time = std::chrono::steady_clock::now();
         }
+        bombcon.DrawExplosions(); 
     }
     endwin(); // конец для ncurses, иначе после работы в терминале останется мусор
     return 0;
