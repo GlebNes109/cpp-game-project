@@ -3,23 +3,28 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "GameSpaceController.cpp"
-#include "PlayerController.cpp"
+#include "GameSpaceController.h"
+#include "PlayerController.h"
 #include "Structures.h"
-#include "EnemyController.cpp"
-#include "BombController.cpp"
+#include "EnemyController.h"
+#include "BombController.h"
 
 
 int main() {
+    setlocale(LC_ALL, ""); // для отображения эмодзи
     initscr(); // для ncurses
-    // nodelay(stdscr, TRUE); // это чтобы getch не блокировал выполнение
-    // timeout(0);
+    start_color(); // Включить поддержку цветов
+    
+    init_pair(1, COLOR_RED, COLOR_RED);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_RED, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+
     auto time_player = 0.09; // время которое отсекается между нажатиями wasd подобрать по ощущениям
     std::vector<Enemy> enemies; // по архитектуре надо будет уточнить, но скорее всего так будет норм
     std::vector<Bomb> bombs;
     std::vector<Explosion> explosions;
     // списки врагов, бомб итд создаются тут, потом закидываем ссылки тому кому они нужны
-    // EnemyController enemycon(enemies, gsc);
 
     GameSpaceController gsc(enemies, bombs, explosions); // ВНИМАНИЕ, это должно быть единственное место где инициализирвоан gsc, повторная инициализация = потеря игрового поля
     BombController bombcon(bombs, gsc, explosions);
@@ -76,23 +81,23 @@ int main() {
                 player_start_time = std::chrono::steady_clock::now();
             }
             
-            if (ch == 'f') {
-                gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
-                // Bomb newBomb = {3, 5}; что это такое?? какой еще newBomb, зачем
+            if (ch == 'f') { // проверка что можно ставить бомбы
+                if (player.GetBombsAllowed() >= bombs.size() + 1) {
+                    gsc.AddBomb(gsc.getPlayerX(), gsc.getPlayerY());
+                }
             }
         }
 
-        if (enemy_timer.count() >= 0.5) {
+        if (enemy_timer.count() >= 0.4) {
             enemycon.MoveEnemies();
             // gsc.DrawGameSpace();
             enemy_start_time = std::chrono::steady_clock::now();
         }
-        if (bomb_check_timer.count() >= 0.5) {
+        if (bomb_check_timer.count() >= 0.2) {
             bombcon.CheckBombs();
             bomb_check_time = std::chrono::steady_clock::now();
         }
-
-        if (draw_timer.count() >= 0.4) {
+        if (draw_timer.count() >= 0.001) {
             res = gsc.DrawGameSpace();
         }
         if (res == false) {

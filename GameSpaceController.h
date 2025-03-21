@@ -1,29 +1,48 @@
 #ifndef GAME_SPACE_CONTROLLER_H
 #define GAME_SPACE_CONTROLLER_H
 
+#include <iostream>
 #include <vector>
 #include <string>
-#include "Structures.h"
 #include <ncurses.h>
+#include "Structures.h"
 
 class GameSpaceController {
 private:
-    int height = 11;
-    int width = 21;
-    int playerX = 5;
-    int playerY = 10;
+    int playerX = 10;
+    int playerY = 5;
+    char player_symbol = 'P';
     std::vector<Enemy>& enemies;
     std::vector<Bomb>& bombs;
-    std::vector<std::string> space;
+    std::vector<Explosion>& explosions;
+    std::vector<std::string> space = {
+        "#####################",
+        "#                   #",
+        "# # # # # # # # # # #",
+        "#                   #",
+        "# # # # # # # # # # #",
+        "#                   #",
+        "# # # # # # # # # # #",
+        "#                   #",
+        "# # # # # # # # # # #",
+        "#                   #",
+        "#####################"
+    };
+    int height = space.size();
+    int width = space[0].size();
 
 public:
-    GameSpaceController(std::vector<Enemy>& enemies, std::vector<Bomb>& bombs);
-    
+    GameSpaceController(std::vector<Enemy>& enemies, std::vector<Bomb>& bombs, std::vector<Explosion>& explosions);
+    char CheckCell(int x, int y);
+
     void AddEnemy(int x, int y);
-    void DrawGameSpace();
+    void AddBomb(int x, int y);
+    bool DrawGameSpace();
+
     std::vector<std::string>& getSpace();
     int& getPlayerX();
     int& getPlayerY();
+    char& getPlayerSymbol();
 };
 
 #endif
