@@ -27,7 +27,7 @@ void EnemyController::MoveEnemies() {
                 next_y--;
             }
 
-        } else { // если не пполучилось по модулю то просто двигаем хоть куда-нибудь
+        } else {
 
             if (dy > 0 && (gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == ' ' || gsc.CheckCell(enemies[i].x, enemies[i].y + 1) == gsc.getPlayerSymbol())) {
                 next_y++;

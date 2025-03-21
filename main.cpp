@@ -17,7 +17,7 @@ int main() {
     
     init_pair(1, COLOR_WHITE, COLOR_RED);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
-    init_pair(3, COLOR_RED, COLOR_BLACK);
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 
     auto time_player = 0.09; // время которое отсекается между нажатиями wasd подобрать по ощущениям
@@ -39,6 +39,14 @@ int main() {
     enemycon.AddEnemy(7, 4);
     enemycon.AddEnemy(8, 9);
     enemycon.AddEnemy(1, 2);
+    enemycon.AddEnemy(30, 21);
+    enemycon.AddEnemy(30, 22);
+    enemycon.AddEnemy(30, 30);
+    enemycon.AddEnemy(25, 27);
+    enemycon.AddEnemy(9, 3);
+    enemycon.AddEnemy(9, 7);
+    enemycon.AddEnemy(9, 10);
+    enemycon.AddEnemy(9, 16);
 
     gsc.DrawGameSpace();
     std::chrono::steady_clock::time_point player_start_time = std::chrono::steady_clock::now();

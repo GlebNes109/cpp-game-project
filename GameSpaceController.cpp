@@ -25,9 +25,9 @@ void GameSpaceController::AddBomb(int x, int y) {
 bool GameSpaceController::DrawGameSpace() {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            attron(COLOR_PAIR(3));
+            attron(COLOR_PAIR(3) | A_DIM);
             mvaddch(y, x, space[y][x]);
-            attroff(COLOR_PAIR(3));
+            attroff(COLOR_PAIR(3) | A_DIM);
         }
     }
 
@@ -52,6 +52,7 @@ bool GameSpaceController::DrawGameSpace() {
 
     attron(COLOR_PAIR(4));
     for (int exp = 0; exp < explosions.size(); exp++) {
+        // отрисовка взрывов с проверкой, есть ли стена, есть ли враг и тд
         Explosion explosion = explosions[exp];
         bool flag_x_m = false;
         bool flag_x_p = false;
@@ -72,13 +73,13 @@ bool GameSpaceController::DrawGameSpace() {
                 int x = blast_x_p;
                 int y = explosion.y;
                 char symbol = CheckCell(x, y);
-                Enemy example_enemy;
+                Enemy example_enemy; // чтобы достать символ врага из структуры
                 char symbol_enemy = example_enemy.symbol;
-    
+                
                 if (symbol == ' ') {
                     mvaddch(y, x, explosion.symbol);
                 } else if (symbol == symbol_enemy) {
-                    for (int enemy = 0; enemy < enemies.size(); enemy++) {
+                    for (int enemy = 0; enemy < enemies.size(); enemy++) { // если взрыв задел врага, вычисляем по циклу какой именно это был враг
                         if (x == enemies[enemy].x && y == enemies[enemy].y) {
                             enemies.erase(enemies.begin() + enemy);
                             break;
