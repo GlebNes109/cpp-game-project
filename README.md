@@ -67,6 +67,7 @@ g++ main.cpp GameSpaceController.cpp BombController.cpp EnemyController.cpp Play
   * Настроение и мотивация команды
   * Формат кода - документация и комментарии
   * Командообразование
+  * Ревьюер кода
 
 - Глеб - техлид
   * Сложность и объем кода
